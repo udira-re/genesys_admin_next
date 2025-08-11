@@ -1,18 +1,16 @@
-"use client";
-
+import React from "react";
 import "./index.css";
-import { ReactNode, useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { LocaleProvider } from "../src/components/localeProvider";
 
-export default function RootLayout({ children }: { children: ReactNode }) {
-  const [queryClient] = useState(() => new QueryClient());
-
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body className="bg-white text-black font-sans">
-        <QueryClientProvider client={queryClient}>
-          {children}
-        </QueryClientProvider>
+        <LocaleProvider>{children}</LocaleProvider>
       </body>
     </html>
   );

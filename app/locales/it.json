@@ -1,0 +1,10 @@
+{
+  "dashboard": {
+    "user": "Utente",
+    "userList": "Lista utenti"
+  },
+  "navbar": {
+    "title": "THE GENESYS",
+    "logout": "Esci"
+  }
+}

@@ -1,23 +1,24 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 export default function DashboardHome() {
   const router = useRouter();
+  const t = useTranslations();
 
   return (
     <div className="max-w-6xl mx-auto p-6">
       {/* Card container */}
       <div
         onClick={() => router.push("/users")}
-        className="cursor-pointer flex items-center bg-white shadow-md hover:shadow-lg transition-shadow rounded-2xl p-6"
+        className="cursor-pointer flex items-center bg-white shadow-md hover:shadow-lg transition-shadow rounded-2xl p-6 border border-gray-300"
       >
         {/* Icon */}
-        <div className="w-16 h-16 flex-shrink-0 rounded-full bg-gradient-to-b from-purple-300 to-blue-300 flex items-center justify-center mr-4">
-          {/* SVG avatar icon */}
+        <div className="w-16 h-16 flex-shrink-0 rounded-full bg-gradient-to-b from-purple-300 to-blue-300 flex items-center justify-center mr-4 border border-red-500">
           <svg
-            className="w-10 h-10 text-white"
+            className="w-8 h-8 text-white"
             fill="currentColor"
             viewBox="0 0 24 24"
           >
@@ -27,8 +28,10 @@ export default function DashboardHome() {
 
         {/* Text Content */}
         <div>
-          <h3 className="text-xl font-semibold text-black">User</h3>
-          <p className="text-gray-500">User List</p>
+          <h3 className="text-xl font-semibold text-black">
+            {t("dashboard.user")}
+          </h3>
+          <p className="text-gray-500">{t("dashboard.userList")}</p>
         </div>
       </div>
     </div>
