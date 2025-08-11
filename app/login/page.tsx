@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
@@ -10,7 +10,15 @@ import { TLoginSchema } from "@/types/authTypes";
 
 export default function LoginPage() {
   const router = useRouter();
+  const token = useAuthStore((state) => state.token);
   const setAuth = useAuthStore((state) => state.setAuth);
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (token) {
+      router.replace("/dashboard");
+    }
+  }, [token, router]);
 
   const {
     register,
@@ -20,7 +28,6 @@ export default function LoginPage() {
 
   const mutation = useMutation({
     mutationFn: login,
-
     onSuccess: (data) => {
       console.log("Login response:", data);
       const accessToken = data?.accessToken;
@@ -30,19 +37,22 @@ export default function LoginPage() {
         return;
       }
 
-      // Assuming your setAuth can store both tokens (adjust if needed)
       setAuth(accessToken);
-
       router.push("/dashboard");
     },
     onError: (error) => {
-      // Handle error if needed
+      console.error("Login failed:", error);
     },
   });
 
   const onSubmit = (data: TLoginSchema) => {
     mutation.mutate(data);
   };
+
+  if (token) {
+    // Prevent flicker of login form while redirecting
+    return null;
+  }
 
   return (
     <div className="max-w-md mx-auto w-full mt-20 p-6 bg-white rounded shadow">
@@ -66,10 +76,9 @@ export default function LoginPage() {
 
         <button
           type="submit"
-          className={`w-full bg-blue-600 text-white py-2 rounded font-semibold 
-          }`}
+          className="w-full bg-blue-600 text-white py-2 rounded font-semibold"
         >
-          Login{" "}
+          {mutation.isPending ? "Logging in..." : "Login"}
         </button>
       </form>
     </div>

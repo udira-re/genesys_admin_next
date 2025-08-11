@@ -24,7 +24,7 @@ export default function UsersListPage() {
     onError: (err) => {
       if (err.message === "Session expired") {
         logout();
-        router.replace("/auth/login");
+        router.replace("/login");
       }
     },
   };

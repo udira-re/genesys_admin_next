@@ -16,7 +16,7 @@ export default function DashboardLayout({
 
   useEffect(() => {
     if (hydrated && !token) {
-      router.push("/auth/login");
+      router.push("/login");
     }
   }, [hydrated, token, router]);
 

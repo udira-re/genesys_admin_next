@@ -1,12 +1,24 @@
 "use client";
 
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import React from "react";
+import { useAuthStore } from "@/store/authStore";
 
 export default function DashboardHome() {
   const router = useRouter();
   const t = useTranslations();
+  const token = useAuthStore((state) => state.token);
+
+  useEffect(() => {
+    if (!token) {
+      router.replace("/login"); // No token → redirect to login
+    }
+  }, [token, router]);
+
+  if (!token) {
+    return null; // Prevent showing dashboard content before redirect
+  }
 
   return (
     <div className="max-w-6xl mx-auto p-6">

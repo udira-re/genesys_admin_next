@@ -23,7 +23,7 @@ export default function Navbar() {
 
   const handleLogout = () => {
     useAuthStore.getState().logout();
-    router.push(`/auth/login`);
+    router.push(`/login`);
   };
 
   return (
