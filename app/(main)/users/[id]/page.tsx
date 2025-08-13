@@ -4,15 +4,20 @@ import { getUserDetail } from "@/services/user";
 import { IUser } from "@/types/userTypes";
 import React from "react";
 
-interface Props {
-  params: { id: string };
+interface PageParams {
+  id: string;
 }
 
+interface Props {
+  params: PageParams;
+}
+
+// Make the function async is fine
 export default async function UserDetailPage({ params }: Props) {
   const { id } = params;
 
-  const cookieStore = await cookies();
-  const token = cookieStore.get("accessToken")?.value;
+  const cookieStore = cookies();
+  const token = (await cookieStore).get("accessToken")?.value;
 
   if (!token) {
     redirect("/logout");
@@ -36,11 +41,11 @@ export default async function UserDetailPage({ params }: Props) {
     );
   }
 
-  const nickname = user?.attributes?.nickname?.[0] || "";
-  const dateOfBirth = user?.attributes?.dateOfBirth?.[0] || "";
-  const status = user?.attributes?.status?.[0] || "";
-  const balance = user?.profile?.balance ?? 0;
-  const gcoin = user?.profile?.gcoin ?? 0;
+  const nickname = user.attributes?.nickname?.[0] || "";
+  const dateOfBirth = user.attributes?.dateOfBirth?.[0] || "";
+  const status = user.attributes?.status?.[0] || "";
+  const balance = user.profile?.balance ?? 0;
+  const gcoin = user.profile?.gcoin ?? 0;
 
   return (
     <div className="max-w-6xl mx-auto p-6 bg-gray-50 min-h-screen">
