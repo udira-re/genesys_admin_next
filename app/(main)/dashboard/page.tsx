@@ -12,12 +12,12 @@ export default function DashboardHome() {
 
   useEffect(() => {
     if (!token) {
-      router.replace("/login"); // No token → redirect to login
+      router.replace("/login");
     }
   }, [token, router]);
 
   if (!token) {
-    return null; // Prevent showing dashboard content before redirect
+    return null;
   }
 
   return (
