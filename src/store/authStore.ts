@@ -10,6 +10,13 @@ const tokenNames = {
   access: "accessToken",
   refresh: "refreshToken",
 };
+interface AxiosErrorLike {
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
+}
 
 interface AuthState {
   token?: string;
@@ -63,12 +70,27 @@ export const useAuthStore = create<AuthState>()(
           });
 
           return true;
-        } catch (err: any) {
+        } catch (err: unknown) {
+          let errorMessage = "Login failed";
+
+          if (err instanceof Error) {
+            errorMessage = err.message;
+          } else if (
+            typeof err === "object" &&
+            err !== null &&
+            "response" in err
+          ) {
+            const axiosErr = err as AxiosErrorLike;
+            if (axiosErr.response?.data?.message) {
+              errorMessage = axiosErr.response.data.message;
+            }
+          }
+
           set((state) => {
             state.loading = false;
-            state.error =
-              err.response?.data?.message || err.message || "Login failed";
+            state.error = errorMessage;
           });
+
           return false;
         }
       },

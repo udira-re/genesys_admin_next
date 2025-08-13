@@ -29,7 +29,7 @@ function getLocale(): string {
 export function LocaleProvider({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
   const [locale, setLocale] = useState(getLocale);
-  const [messages, setMessages] = useState<any>(null);
+  const [messages, setMessages] = useState<unknown>(null);
 
   useEffect(() => {
     import(`../../app/locales/${locale}.json`)

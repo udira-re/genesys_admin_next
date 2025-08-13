@@ -21,12 +21,12 @@ export default function UsersListPage() {
     },
     retry: 1,
     enabled: !!token,
-    onError: (err) => {
-      if (err.message === "Session expired") {
-        logout();
-        router.replace("/login");
-      }
-    },
+    // onError: (err) => {
+    //   if (err.message === "Session expired") {
+    //     logout();
+    //     router.replace("/login");
+    //   }
+    // },
   };
 
   const {
