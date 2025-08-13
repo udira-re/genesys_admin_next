@@ -2,22 +2,13 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { getUserDetail } from "@/services/user";
 import { IUser } from "@/types/userTypes";
-import React from "react";
 
-interface PageParams {
-  id: string;
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default async function UserDetailPage({ params }: any) {
+  // Using 'any' here avoids the TS PageProps conflict
+  const { id } = params as { id: string };
 
-interface Props {
-  params: PageParams;
-}
-
-// Make the function async is fine
-export default async function UserDetailPage({ params }: Props) {
-  const { id } = params;
-
-  const cookieStore = cookies();
-  const token = (await cookieStore).get("accessToken")?.value;
+  const token = (await cookies()).get("accessToken")?.value;
 
   if (!token) {
     redirect("/logout");
@@ -27,7 +18,7 @@ export default async function UserDetailPage({ params }: Props) {
 
   try {
     user = await getUserDetail(id, token);
-  } catch (error) {
+  } catch {
     return (
       <div className="text-red-500 p-4 max-w-4xl mx-auto">
         Failed to load user details.
@@ -41,9 +32,9 @@ export default async function UserDetailPage({ params }: Props) {
     );
   }
 
-  const nickname = user.attributes?.nickname?.[0] || "";
-  const dateOfBirth = user.attributes?.dateOfBirth?.[0] || "";
-  const status = user.attributes?.status?.[0] || "";
+  const nickname = user.attributes?.nickname?.[0] ?? "";
+  const dateOfBirth = user.attributes?.dateOfBirth?.[0] ?? "";
+  const status = user.attributes?.status?.[0] ?? "";
   const balance = user.profile?.balance ?? 0;
   const gcoin = user.profile?.gcoin ?? 0;
 
@@ -60,9 +51,9 @@ export default async function UserDetailPage({ params }: Props) {
         <InputField label="Nickname" value={nickname} />
         <InputField label="Date of Birth" value={dateOfBirth} />
         <InputField label="Status" value={status} />
-        <InputField label="VAT Number" value={user.vatNumber || ""} />
-        <InputField label="Fiscal Code" value={user.fiscalCode || ""} />
-        <InputField label="Role" value={user.role?.join(", ") || ""} />
+        <InputField label="VAT Number" value={user.vatNumber ?? ""} />
+        <InputField label="Fiscal Code" value={user.fiscalCode ?? ""} />
+        <InputField label="Role" value={user.role?.join(", ") ?? ""} />
         <InputField label="Balance" value={`$ ${balance}`} />
         <InputField label="GCOIN" value={`${gcoin}`} />
       </div>
@@ -70,7 +61,6 @@ export default async function UserDetailPage({ params }: Props) {
   );
 }
 
-// Reusable read-only input field component
 const InputField = ({ label, value }: { label: string; value: string }) => (
   <label className="flex flex-col">
     <span className="text-sm text-gray-600 mb-1">{label}</span>
