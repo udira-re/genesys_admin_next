@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, createContext, useContext } from "react";
-import { NextIntlClientProvider } from "next-intl";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { NextIntlClientProvider } from "next-intl";
 
 interface LocaleContextType {
   locale: string;
