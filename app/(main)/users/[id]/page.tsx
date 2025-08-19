@@ -1,15 +1,15 @@
-"use client";
-
+import React from "react";
 import UserDetailClient from "@/components/skeleton/userDetailClient";
 
-interface PageParams {
-  id: string;
-}
+// Next.js App Router expects params as Record<string, string>
+type PageProps = {
+  params: Record<string, string>;
+};
 
-interface UserDetailPageProps {
-  params: PageParams;
-}
+const UserDetailPage: React.FC<PageProps> = ({ params }) => {
+  const { id } = params;
 
-export default function UserDetailPage({ params }: UserDetailPageProps) {
-  return <UserDetailClient id={params.id} />;
-}
+  return <UserDetailClient id={id} />;
+};
+
+export default UserDetailPage;

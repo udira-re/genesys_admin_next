@@ -14,13 +14,13 @@ export default function UserDetailClient({ id }: UserDetailClientProps) {
   const [user, setUser] = useState<IUser | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const { token } = useAuthStore(); // get token internally
+  const { token } = useAuthStore();
 
   useEffect(() => {
     if (!token) {
       setError("No auth token found.");
       setLoading(false);
-      return; // exit early if token is undefined
+      return;
     }
 
     async function fetchUser() {
@@ -40,12 +40,7 @@ export default function UserDetailClient({ id }: UserDetailClientProps) {
   if (loading) {
     return (
       <div className="max-w-6xl mx-auto p-6 bg-gray-50 min-h-screen">
-        {/* Title Skeleton */}
         <Skeleton width="200px" height="40px" className="mb-8" />
-
-        {/* Optional avatar */}
-
-        {/* Input fields skeleton */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {Array.from({ length: 11 }).map((_, idx) => (
             <div key={idx} className="flex flex-col">
