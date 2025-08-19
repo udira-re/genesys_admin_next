@@ -4,21 +4,28 @@ import { useEffect, useState } from "react";
 import { getUserDetail } from "@/services/user";
 import { IUser } from "@/types/userTypes";
 import Skeleton from "./skeleton";
+import { useAuthStore } from "@/store/authStore";
 
 interface UserDetailClientProps {
   id: string;
-  token: string;
 }
 
-export default function UserDetailClient({ id, token }: UserDetailClientProps) {
+export default function UserDetailClient({ id }: UserDetailClientProps) {
   const [user, setUser] = useState<IUser | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const { token } = useAuthStore(); // get token internally
 
   useEffect(() => {
+    if (!token) {
+      setError("No auth token found.");
+      setLoading(false);
+      return; // exit early if token is undefined
+    }
+
     async function fetchUser() {
       try {
-        const data = await getUserDetail(id, token);
+        const data = await getUserDetail(id, token!);
         setUser(data);
       } catch {
         setError("Failed to load user details.");
@@ -26,6 +33,7 @@ export default function UserDetailClient({ id, token }: UserDetailClientProps) {
         setLoading(false);
       }
     }
+
     fetchUser();
   }, [id, token]);
 
