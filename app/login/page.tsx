@@ -29,7 +29,6 @@ export default function LoginPage() {
   const mutation = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      console.log("Login response:", data);
       const accessToken = data?.accessToken;
 
       if (!accessToken) {
