@@ -2,14 +2,18 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import UserDetailClient from "@/components/skeleton/userDetailClient";
 
-export default async function UserDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+interface UserDetailPageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default async function UserDetailPage({ params }: UserDetailPageProps) {
   const { id } = params;
 
-  const token = (await cookies()).get("accessToken")?.value;
+  // cookies() returns a Promise in this context
+  const cookieStore = await cookies();
+  const token = cookieStore.get("accessToken")?.value;
 
   if (!token) {
     redirect("/logout");
