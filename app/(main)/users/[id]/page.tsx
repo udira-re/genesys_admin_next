@@ -2,17 +2,15 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import UserDetailClient from "@/components/skeleton/userDetailClient";
 
-interface UserDetailPageProps {
-  params: {
-    id: string;
-  };
-}
-
-export default async function UserDetailPage({ params }: UserDetailPageProps) {
+// Do not explicitly extend PageProps
+export default async function UserDetailPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const { id } = params;
 
-  // cookies() returns a Promise in this context
-  const cookieStore = await cookies();
+  const cookieStore = await cookies(); // await because cookies() may be a Promise
   const token = cookieStore.get("accessToken")?.value;
 
   if (!token) {
