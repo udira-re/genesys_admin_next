@@ -1,8 +1,15 @@
+"use client";
+
 import UserDetailClient from "@/components/skeleton/userDetailClient";
 
-// Server Component
-export default function UserDetailPage({ params }: { params: { id: string } }) {
-  const { id } = params;
+interface PageParams {
+  id: string;
+}
 
-  return <UserDetailClient id={id} />;
+interface UserDetailPageProps {
+  params: PageParams;
+}
+
+export default function UserDetailPage({ params }: UserDetailPageProps) {
+  return <UserDetailClient id={params.id} />;
 }
